@@ -63,6 +63,7 @@ class Chatbot:
             embedding = OpenAIEmbeddings()
             
             vectordb = FAISS.load_local(
+                # "HospitalManagement\vectorstore\db_faiss",
                 "vectorstore/db_faiss",
                 embedding,
                 allow_dangerous_deserialization=True,
@@ -94,5 +95,5 @@ class Chatbot:
         #     raise e
 
 
-obj = Chatbot()
-print(obj.ask_que("Was the ADR expected or unexpected based on the known side effects of the drug?"))
+# obj = Chatbot()
+# print(obj.ask_que("Was the ADR expected or unexpected based on the known side effects of the drug?"))
