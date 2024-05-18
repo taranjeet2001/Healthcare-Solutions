@@ -8,6 +8,9 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required,user_passes_test
 from rest_framework import viewsets
 from .serialzers import GallarySerialzers
+from HospitalManagement.chatbot import Chatbot
+from django.http import HttpResponse, JsonResponse
+
 # Create your views here.
 
 # def viewHome(request):
@@ -19,6 +22,36 @@ from .serialzers import GallarySerialzers
 #         frm_bound.save()
 #         return redirect('home')
 #     return render(request,'hospital/index.html',locals())
+
+
+def view_chat(request):
+    if request.method == 'POST':
+        user_message = request.POST['user_message']
+        obj = Chatbot()
+        bot_response = obj.ask_que(user_message)
+        # message = Message(user_message=user_message, bot_response=bot_response)
+        # message.save()
+        print(f"User message: {user_message}, Bot response: {bot_response}")
+
+    messages = Message.objects.order_by('timestamp')
+    return render(request, 'hospital/chat.html', {'messages': messages})
+
+def view_chat_bot(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('user_message', '')
+        obj = Chatbot()
+        bot_response = obj.ask_que(user_message)
+        
+        # message = Message(user_message=user_message, bot_response=bot_response)
+        # message.save()
+
+        response = {
+            'message': bot_response
+        }
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'error': 'Invalid request method.'})
+
 
 
 

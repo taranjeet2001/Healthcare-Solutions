@@ -10,7 +10,11 @@ departments = [('Cardiologist', 'Cardiologist'),
                ('Colon and Rectal Surgeons', 'Colon and Rectal Surgeons')
                ]
 
-
+class Message(models.Model):
+    user_message = models.TextField()
+    bot_response = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(

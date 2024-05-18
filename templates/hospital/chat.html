@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'chatbot_app/css/styles.css' %}"> {% endcomment %}
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #0645ad;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        #chat-window {
+            height: 400px;
+            width: 100%;
+            max-width: 600px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 8px;
+            max-width: 60%;
+            border-radius: 5px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .message.user {
+            background-color: #0645ad; /* deep blue */
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .message.bot {
+            background-color: #b22222; /* deep red */
+            color: white;
+            align-self: flex-start;
+        }
+        
+        #chat-form {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        #chat-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        button {
+            background-color: #ffffff;
+            color: #003880;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        button:hover {
+            background-color: #003880;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatroom</h1>
+    <div id="chat-window">
+        {% for message in messages %}
+        <div class="message user">{{ message.user_message }}</div>
+        <div class="message bot">{{ message.bot_response }}</div>
+      {% endfor %}
+      
+    </div>
+    <form id="chat-form">
+        {% csrf_token %}
+        <input type="text" id="chat-input" placeholder="Enter your message...">
+        <button type="submit">Send</button>
+    </form>
+
+    <button id="clear-chat-btn">Clear Chat</button>
+
+    
+    
+    {% comment %} <script src="{% static 'chatbot_app/chat.js' %}"></script> {% endcomment %}
+    <script>
+         {% comment %} function displayMessage(text, sender = 'user') {
+            const chatWindow = document.getElementById('chat-window');
+            const messageElem = document.createElement('div');
+            messageElem.classList.add('message');
+            messageElem.classList.add(sender);
+            messageElem.textContent = text;
+            chatWindow.appendChild(messageElem);
+        }
+        
+        function clearChat() {
+            const chatWindow = document.getElementById('chat-window'); 
+            chatWindow.innerHTML = '';
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatForm = document.getElementById('chat-form');
+            chatForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const chatInput = document.getElementById('chat-input');
+                const message = chatInput.value;
+                chatInput.value = '';
+        
+                displayMessage(message);
+                console.log(message)
+        
+                const response = await fetch('/message/', {
+                    method: 'POST',
+                    body: new URLSearchParams({user_message: message}),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                    },
+                });
+        
+                if (response.ok) {
+                    const data = await response.json();
+                    displayMessage(data.message, 'bot');
+                } else {
+                    console.error('Error sending message:', response.statusText);
+                }
+            });
+        
+            const clearChatBtn = document.getElementById('clear-chat-btn');
+            clearChatBtn.addEventListener('click', clearChat);
+        });  {% endcomment %}
+        
+        function displayMessage(text, sender = 'user') {
+            const chatWindow = document.getElementById('chat-window');
+            const messageElem = document.createElement('div');
+            messageElem.classList.add('message');
+            messageElem.classList.add(sender);
+            messageElem.textContent = text;
+            chatWindow.appendChild(messageElem);
+        }
+        
+        function clearChat() {
+            const chatWindow = document.getElementById('chat-window'); 
+            chatWindow.innerHTML = '';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+    const chatForm = document.getElementById('chat-form');
+    chatForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const chatInput = document.getElementById('chat-input');
+        const message = chatInput.value;
+        chatInput.value = '';
+
+        displayMessage(message);
+        console.log(message)
+
+        const response = await fetch('/message/', {
+            method: 'POST',
+            body: new URLSearchParams({user_message: message}),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            displayMessage(data.message.result, 'bot'); // Display JSON response as a string
+        } else {
+            console.error('Error sending message:', response.statusText);
+        }
+    });
+
+    const clearChatBtn = document.getElementById('clear-chat-btn');
+    clearChatBtn.addEventListener('click', clearChat);
+});
+        
+        
+        
+    </script>
+</body>
+</html>

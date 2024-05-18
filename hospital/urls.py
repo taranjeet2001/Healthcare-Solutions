@@ -11,6 +11,9 @@ urlpatterns = [
     path('login/',ViewLogin,name='login'),
     path('logout/',ViewLogout,name='logout'),
 
+    path('chat/',view_chat, name='chat_view'),
+    path('message/', view_chat_bot, name='chat_message'),
+
 # ADMIN LOGIN
     path('admin-login/',ViewAdminLogin,name='adminlogin'),
     path('admin-signup/',ViewAdminSignup,name='adminsignup'),
