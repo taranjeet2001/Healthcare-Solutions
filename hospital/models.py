@@ -10,7 +10,11 @@ departments = [('Cardiologist', 'Cardiologist'),
                ('Colon and Rectal Surgeons', 'Colon and Rectal Surgeons')
                ]
 
-
+class Message(models.Model):
+    user_message = models.TextField()
+    bot_response = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(
@@ -92,4 +96,8 @@ class Contact(models.Model):
         return self.name
 
 
-    
+class Emergency(models.Model):
+    summary = models.TextField(max_length=500)
+
+    def __str__(self):
+        f"Emergency ID: {self.id}"
