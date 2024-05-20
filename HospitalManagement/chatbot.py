@@ -1,11 +1,12 @@
 from langchain_openai import ChatOpenAI
-from langchain.vectorstores import FAISS
+# from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import PromptTemplate
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.callbacks import get_openai_callback
 import os
 import shutil
 from langchain.chains import RetrievalQA
-from langchain import PromptTemplate
 
 data = """Introduction:
 Adverse events (AEs) are unwanted or harmful effects that occur in patients during clinical trials. AEs can range from mild to severe and can impact patient safety, study outcomes, and regulatory approval. This report describes a case of a serious adverse event observed in a phase I clinical trial of a new medication for the treatment of advanced solid tumors.

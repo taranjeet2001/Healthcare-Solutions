@@ -96,4 +96,8 @@ class Contact(models.Model):
         return self.name
 
 
-    
+class Emergency(models.Model):
+    summary = models.TextField(max_length=500)
+
+    def __str__(self):
+        f"Emergency ID: {self.id}"

@@ -10,6 +10,9 @@ from rest_framework import viewsets
 from .serialzers import GallarySerialzers
 from HospitalManagement.chatbot import Chatbot
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 # Create your views here.
 
@@ -22,6 +25,20 @@ from django.http import HttpResponse, JsonResponse
 #         frm_bound.save()
 #         return redirect('home')
 #     return render(request,'hospital/index.html',locals())
+@csrf_exempt
+def view_summarize_chat(request):
+    if request.method == 'POST':
+            try:
+                data = json.loads(request.body)
+                summary = data.get('summary', '')
+                # Save the summary to the Emergency model
+                emergency = Emergency(summary=summary)
+                emergency.save()
+                return JsonResponse({'status': 'success', 'emergency_id': emergency.id})
+            except Exception as e:
+                return JsonResponse({'status': 'fail', 'error': str(e)}, status=400)
+        # return JsonResponse({'status': 'fail'}, status=400)
+
 
 
 def view_chat(request):
