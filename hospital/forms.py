@@ -15,8 +15,6 @@ class AdminForms(forms.ModelForm):
             frm.widget.attrs['class']='form-control'
             frm.widget.attrs['placeholder']=f'Enter {frm.label}'
 
-   
- 
 class DoctorUserForms(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput,label="Password")
     class Meta:
