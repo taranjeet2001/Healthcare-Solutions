@@ -7,7 +7,8 @@
     <div class="card" style="width: 18rem;">
         <img src="{% static 'hospital/images/admin.png' %}" class="card-img-top" alt="">
         <h2>Admin</h2>
-        <div><a href="{% url 'adminsignup' %}" class="btn btn-primary me-4">Register</a>
+        <div>
+        {% comment %} <a href="{% url 'adminsignup' %}" class="btn btn-primary me-4">Register</a> {% endcomment %}
         <a href="{% url 'adminlogin' %}" class="btn btn-primary ">Login</a></div>
     </div>
    </a>
